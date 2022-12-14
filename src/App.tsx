@@ -1,24 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from "axios";
+
+type Character ={
+  id:number
+  name: string
+}
 
 function App() {
+  console.log("App");
+  const [characters, setCharacters]= useState<Character[]>([]);
+
+  useEffect(()=>{
+    (async () =>{
+      const response = await axios.get("https://rickandmortyapi.com/api/character");
+      setCharacters(response.data.results);
+    })()
+  },[]);
+
+  console.log("Return");
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        {characters.map(character => (<li key={character.id}>{character.name}</li>))}
+      </ul>
     </div>
   );
 }
