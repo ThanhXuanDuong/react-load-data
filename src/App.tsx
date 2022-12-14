@@ -13,10 +13,9 @@ function App() {
   const [characters, setCharacters]= useState<Character[]>([]);
 
   useEffect(()=>{
-    (async () =>{
-      const response = await axios.get("https://rickandmortyapi.com/api/character");
-      setCharacters(response.data.results);
-    })()
+    axios.get("https://rickandmortyapi.com/api/character")
+        .then(response=> setCharacters(response.data.results))
+        .catch(e => console.error(e))
   },[]);
 
   console.log("Return");
