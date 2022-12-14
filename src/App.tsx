@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
-import axios from "axios";
 
 type Character ={
   id:number
@@ -13,19 +11,19 @@ function App() {
   const [characters, setCharacters]= useState<Character[]>([]);
 
   useEffect(()=>{
-    (async () =>{
-      const response = await axios.get("https://rickandmortyapi.com/api/character");
-      setCharacters(response.data.results);
-    })()
+    fetch("https://rickandmortyapi.com/api/character")
+        .then(response=>response.json())
+        .then(data => setCharacters(data.results))
+        .catch(e => console.error(e))
   },[]);
 
   console.log("Return");
   return (
-    <div className="App">
-      <ul>
-        {characters.map(character => (<li key={character.id}>{character.name}</li>))}
-      </ul>
-    </div>
+      <div className="App">
+        <ul>
+          {characters.map(character => (<li key={character.id}>{character.name}</li>))}
+        </ul>
+      </div>
   );
 }
 
